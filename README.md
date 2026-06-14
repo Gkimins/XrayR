@@ -19,6 +19,9 @@ A Xray backend framework that can easily support many panels.
 
 使用教程：[详细使用教程](https://xrayr-project.github.io/XrayR-doc/)
 
+> ⚠️ **注意：最新提交未经过完整测试**
+>
+> 当前最新提交（升级 xray-core 至 `v1.260327.0`）仅通过了本地核心自检（构建、`go vet`、单元测试、入站构建与启动自检），**尚未在真实面板 + 真实客户端流量下验证**（尤其是流量统计与上报）。请勿直接用于生产环境，自行充分测试后再使用。
 
 ## 免责声明
 

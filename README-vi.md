@@ -19,6 +19,10 @@ Nếu bạn thích dự án này, bạn có thể nhấp vào Star+Watch ở gó
 ## Tài liệu
 Sử dụng hướng dẫn: [Hướng dẫn chi tiết](https://xrayr-project.github.io/XrayR-doc/) ( Tiếng Trung )
 
+> ⚠️ **Lưu ý: commit mới nhất chưa được kiểm thử đầy đủ**
+>
+> Commit mới nhất (nâng cấp xray-core lên `v1.260327.0`) mới chỉ vượt qua kiểm tra cục bộ phần lõi (build, `go vet`, unit test, và tự kiểm tra việc khởi tạo inbound). Nó **chưa** được xác minh với panel thật và lưu lượng từ client thật (đặc biệt là việc thống kê và báo cáo lưu lượng). Đừng dùng cho môi trường production khi chưa tự kiểm thử.
+
 ## Tuyên bố miễn trừ
 
 Dự án này chỉ là học tập và phát triển và bảo trì cá nhân của tôi. Tôi không đảm bảo bất kỳ sự sẵn có nào và không chịu trách nhiệm cho bất kỳ hậu quả nào do việc sử dụng phần mềm này.

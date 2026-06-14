@@ -21,6 +21,9 @@ If you like this project, you can click STAR+WATCH in the upper right corner to 
 
 Tutorial：[Detailed tutorial](https://xrayr-project.github.io/XrayR-doc/)
 
+> ⚠️ **Note: the latest commit has not been fully tested**
+>
+> The latest commit (upgrading xray-core to `v1.260327.0`) has only passed a local core self-check (build, `go vet`, unit tests, and an inbound build/startup self-check). It has **not** been verified with a real panel and real client traffic (in particular traffic accounting and reporting). Do not use it in production without testing it yourself.
 
 ## Disclaimer
 
