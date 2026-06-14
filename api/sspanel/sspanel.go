@@ -189,10 +189,7 @@ func (c *APIClient) GetNodeInfo() (nodeInfo *api.NodeInfo, err error) {
 
 	// determine ssPanel version, if disable custom config or version < 2021.11, then use old api
 	c.version = nodeInfoResponse.Version
-	var isExpired bool
-	if compareVersion(c.version, "2021.11") == -1 {
-		isExpired = true
-	}
+	isExpired := c.versionOlderThan("2021.11")
 
 	if c.DisableCustomConfig || isExpired {
 		if isExpired {
@@ -266,7 +263,7 @@ func (c *APIClient) GetUserList() (UserList *[]api.UserInfo, err error) {
 // ReportNodeStatus reports the node status to the ssPanel
 func (c *APIClient) ReportNodeStatus(nodeStatus *api.NodeStatus) (err error) {
 	// Determine whether a status report is in need
-	if compareVersion(c.version, "2023.2") == -1 {
+	if c.versionOlderThan("2023.2") {
 		path := fmt.Sprintf("/mod_mu/nodes/%d/info", c.NodeID)
 		systemLoad := SystemLoad{
 			Uptime: strconv.FormatUint(nodeStatus.Uptime, 10),
@@ -832,6 +829,28 @@ func (c *APIClient) ParseSSPanelNodeInfo(nodeInfoResponse *NodeInfoResponse) (*a
 	}
 
 	return nodeInfo, nil
+}
+
+// versionOlderThan reports whether the panel version is older than the given
+// date-based threshold (e.g. "2021.11").
+//
+// SSpanel historically used date-based versions with a 4-digit year ("2021.11").
+// Newer sspanel-uim switched to calendar-semver with a 2-digit year ("25.1.0").
+// A naive numeric compare treats "25.1.0" as < "2021.11" (25 < 2021), which
+// wrongly flags every new panel as outdated. Any new-scheme version (small
+// major) is therefore considered newer than every date threshold. An empty or
+// unparsable version (legacy panels that don't report one) keeps the old
+// behaviour of comparing directly, i.e. treated as older.
+func (c *APIClient) versionOlderThan(threshold string) bool {
+	majorStr := c.version
+	if i := strings.IndexByte(majorStr, '.'); i >= 0 {
+		majorStr = majorStr[:i]
+	}
+	if major, err := strconv.Atoi(majorStr); err == nil && major > 0 && major < 2000 {
+		// New calendar-semver scheme: always newer than the old date thresholds.
+		return false
+	}
+	return compareVersion(c.version, threshold) == -1
 }
 
 // compareVersion, version1 > version2 return 1, version1 < version2 return -1, 0 means equal
